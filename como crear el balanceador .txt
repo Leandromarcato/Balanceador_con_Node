@@ -1,0 +1,16 @@
+ 
+creamos el contenor de mysql 
+docker run -d -p 3306:3306 --name mi-contenedor-mysql -e MYSQL_ROOT_PASSWORD=12345 -v D:\Balanceador_con_Node\db:/var/lib/mysql mysql:debian
+
+creamos el contenedor web1-container
+docker build -t web1-container .
+docker run -d --name web1-container -p 8081:80 web1-container
+
+creamos el contenedor web2-container 
+docker build -t web2-container .
+docker run -d --name web2-container -p 8082:80 web2-container
+
+creamos el contenedor de aproxy
+ docker run --name haproxy-container --network myred -p 8085:80 -v D:\Balanceador_con_Node\balanceador\haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro -d haproxy:latest
+
+docker cp ${PWD}/haproxy.cfg haproxy-container:/us.cfg
